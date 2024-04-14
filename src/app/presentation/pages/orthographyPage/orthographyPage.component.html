@@ -1,0 +1,32 @@
+<div class="chat-container">
+  <div class="chat-messages">
+    <div class="grid gap-y-2">
+      <!-- chat messages -->
+
+      <app-gpt-message text="Escribe un texto para corregirlo..."></app-gpt-message>
+      @for (message of messages(); track $index) {
+        @if (message.isGpt) {
+          <app-gpt-message-orthography
+          [text]="message.text"
+          [userScore]="message.info!.userScore"
+          [errors]="message.info!.errors"
+          ></app-gpt-message-orthography>
+        }@else {
+          <app-my-message [text]="message.text" />
+        }
+      }
+
+      @if (isLoading()) {
+        <app-typing-loader />
+      }
+
+    </div>
+  </div>
+  <!-- Message box -->
+  <app-text-message-box
+  placeholder="Escribe aqui lo que desees..."
+  (onMessage)="handleMessage($event)"
+  [disableCorrections]="true"
+  />
+
+</div>
